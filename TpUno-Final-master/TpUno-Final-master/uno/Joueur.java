@@ -152,13 +152,25 @@ public class Joueur {
 		}
 		System.out.println(str);
 	}
+
+
+public int nbCarteDeLaCouleur(Couleur couleurTalon){
+int accumulateur=0;
+for (int i = 0; i < getMain().cartes.size(); i++) {
+	if (getMain().cartes.get(i).couleur.compareTo(couleurTalon) == 1)
+	{
+	accumulateur++;
+	}	
+}
+return accumulateur;
+
+	
+}
 	
 
-	public void bluff()
-	{
-	
-			{
-				if (nbCartesJouables() > 0)
+	public void bluff(Couleur couleurTalon)
+	{			
+				if (nbCarteDeLaCouleur(couleurTalon) > 0)
 				{
 					estEnTrainDeBluffer = true;
 					prendreCarte();
@@ -167,7 +179,8 @@ public class Joueur {
 				}
 				
 				System.out.println("Ce n est pas du bluff tu ne peux pas jouer !");
-			}}
+			}
+
 	
 		
 

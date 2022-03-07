@@ -45,7 +45,8 @@ public class Jeu {
 		pioche.melanger();
 		talon = new Talon(pioche);
 		System.out.println("combien de joueurs veulent jouer ?");		
-		nbJoueurs = Clavier.lireEntier(2, 10); // pas plus de 4 joueurs
+		nbJoueurs = Clavier.lireEntier(2, 10); 
+		// pas plus de 4 joueurs
 		// TOOD verifier que l utilisateur entre bien un nombre
 		joueurs = new Joueur[nbJoueurs];
 		for (int i = 0; i < nbJoueurs; i++) {
@@ -70,6 +71,9 @@ public class Jeu {
 	
 	}
 
+	/**
+	 * somme les score
+	 */
 	public void ajouterLesScores()
 	{
 		for (Joueur joueur : joueurs) {
@@ -94,7 +98,7 @@ public class Jeu {
 	public void choisirUneAction()
 	{
 		String choixAction;
-		System.out.println("/u dire uno, /a accuser de bluff, /p jouer une carte, /b bluffer");
+		System.out.println("/u dire uno, /a accuser de bluff, /j jouer une carte, /b bluffer");
 		choixAction = Clavier.lireChaine();
 		
 		switch (choixAction) {
@@ -109,8 +113,11 @@ public class Jeu {
 
 			
 			case "/a":
-				Joueur joueurAccuser = new Joueur("default", pioche, talon);
-				System.out.println("qui accuser vous de bluff ( par pseudo )");
+				if (leBluffEstPossible()==true)
+				{
+
+					Joueur joueurAccuser = new Joueur("default", pioche, talon);
+					System.out.println("qui accuser vous de bluff ( par pseudo )");
 				String NomjoueurAccuser = Clavier.lireChaine();
 
 				for (Joueur joueur : joueurs) {
@@ -120,11 +127,15 @@ public class Jeu {
 					}
 				}
 				joueurCourant.accuserDeBluff(joueurAccuser);
+			}
 				break;
-
-			
+				
+				
 		case "/b":
-			joueurCourant.bluff();
+			if (leBluffEstPossible())
+			{
+				joueurCourant.bluff(talon.sommet().couleur);
+			}
 			break;
 
 		default:
@@ -134,7 +145,17 @@ public class Jeu {
 
 	}
 
+public boolean leBluffEstPossible()
+{
 
+
+		if(((CarteSpecial) talon.sommet()).getSymbole() == Symbole.PLUS4) 
+		{
+			return true;
+		}
+		return false;
+	
+}
 	
 
 
@@ -158,17 +179,21 @@ public class Jeu {
 	 */
 	public void casPlus2()
 	{
-		if (((CarteSpecial) talon.sommet()).getSymbole() == Symbole.PLUS2) {	// le joueur precedant a joue +2
-			// le joueur courant doit piocher 2 cartes
-			System.out.println(joueurCourant.getPseudo() + " doit piocher 2 cartes et passer son tour -> effet de la carte " + talon.sommet());
-			for (int i = 0; i < 2; i++) {
-				joueurCourant.prendreCarte();
+		if (talon.sommet() instanceof CarteSpecial)
+		{
+
+			if (((CarteSpecial) talon.sommet()).getSymbole() == Symbole.PLUS2) {	// le joueur precedant a joue +2
+				// le joueur courant doit piocher 2 cartes
+				System.out.println(joueurCourant.getPseudo() + " doit piocher 2 cartes et passer son tour -> effet de la carte " + talon.sommet());
+				for (int i = 0; i < 2; i++) {
+					joueurCourant.prendreCarte();
+				}
+				// et passer son tour
+				joueurSuivant();
+				
 			}
-			// et passer son tour
-			joueurSuivant();
 			
 		}
-
 	}
 
 	
@@ -216,15 +241,10 @@ public class Jeu {
 				effetSpecial = false;
 				// Verifie si carte passer
 				casPasser();
-				//
 				// Verifie si carte plus 2
 				casPlus2();
-				//
 				// Verifie si carte plus 4
 				casPlus4();
-
-				
-			
 			}
 			choisirUneAction();
 			// si aucunes action il joue simplement
