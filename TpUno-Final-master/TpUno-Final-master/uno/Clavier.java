@@ -1,7 +1,10 @@
 package uno;
 
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 
 
@@ -21,12 +24,21 @@ public class Clavier {
      * permet de lire un entier e partir du clavier
      * @return l'entier lu
      */
-    public static int lireEntier() {
+    public static int lireEntier() throws InputMismatchException {
         System.out.print( "? >> " );
-        int res = scanner.nextInt();
+        int resultat = -1;
+       
+
+        try {
+            resultat = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("[!] Veuillez entrer un entier \n ");
+           
+        }
+        
         scanner.nextLine(); 
         
-        return res;
+        return resultat;
     }
 
     /**

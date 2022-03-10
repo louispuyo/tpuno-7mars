@@ -98,7 +98,7 @@ public class Jeu {
 	public void choisirUneAction()
 	{
 		String choixAction;
-		System.out.println("/u dire uno, /a accuser de bluff, /j jouer une carte, /b bluffer");
+		System.out.println("/u dire uno, /a accuser de bluff, /j jouer une carte ");
 		choixAction = Clavier.lireChaine();
 		
 		switch (choixAction) {
@@ -129,31 +129,28 @@ public class Jeu {
 				joueurCourant.accuserDeBluff(joueurAccuser);
 			}
 				break;
-				
-				
-		case "/b":
-			if (leBluffEstPossible())
-			{
-				joueurCourant.bluff(talon.sommet().couleur);
-			}
-			break;
+		
 
 		default:
-			break;
+			joueurCourant.jouerTour();
 	}
 
 
 	}
 
-public boolean leBluffEstPossible()
+public boolean leBluffEstPossible() throws ClassCastException
 {
 
-
-		if(((CarteSpecial) talon.sommet()).getSymbole() == Symbole.PLUS4) 
-		{
-			return true;
-		}
-		return false;
+try {
+	if(((CarteSpecial) talon.sommet()).getSymbole() == Symbole.PLUS4) 
+	{
+		return true;
+	}
+} catch (ClassCastException e) {
+	
+}
+return false;
+	
 	
 }
 	

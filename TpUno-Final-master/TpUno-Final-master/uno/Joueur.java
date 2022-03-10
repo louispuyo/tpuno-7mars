@@ -168,19 +168,7 @@ return accumulateur;
 }
 	
 
-	public void bluff(Couleur couleurTalon)
-	{			
-				if (nbCarteDeLaCouleur(couleurTalon) > 0)
-				{
-					estEnTrainDeBluffer = true;
-					prendreCarte();
-					return;
-					
-				}
-				
-				System.out.println("Ce n est pas du bluff tu ne peux pas jouer !");
-			}
-
+	
 	
 		
 
